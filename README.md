@@ -29,8 +29,8 @@ Before setting up the project, ensure you have the following installed:
 Clone this repository to your server:
 
 ```sh
-git clone https://github.com/<your-username>/myai-project.git
-cd myai-project
+git clone https://github.com/pourjavadi/MyAI-Chatbot.git
+cd MyAI-Chatbot
 ```
 
 ### 2. Set Up a Virtual Environment
@@ -101,8 +101,8 @@ After=network.target
 
 [Service]
 User=root
-WorkingDirectory=/root/myai-project
-ExecStart=/root/myai-project/ai_env/bin/python3 /root/myai-project/app.py
+WorkingDirectory=/root/MyAI-Chatbot
+ExecStart=/root/MyAI-Chatbot/ai_env/bin/python3 /root/MyAI-Chatbot/app.py
 Restart=always
 
 [Install]
