@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0A0A23 0%, #1C2526 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .chat-container {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700, #C0C0C0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1C2526;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .header .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .welcome-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .welcome-message .icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FFD700, #C0C0C0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            animation: bounce 1s ease-in-out;
+        }
+
+        .welcome-message .icon svg {
+            width: 30px;
+            height: 30px;
+            fill: #1C2526;
+        }
+
+        .welcome-message h2 {
+            font-size: 28px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #FFD700, #C0C0C0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-message p {
+            font-size: 16px;
+            color: #a0a0a0;
+            max-width: 600px;
+        }
+
+        .features {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .features button {
+            background: linear-gradient(90deg, #FFD700, #C0C0C0);
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: #1C2526;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .features button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+        }
+
+        .features button svg {
+            width: 16px;
+            height: 16px;
+            fill: #1C2526;
+            transition: transform 0.3s ease;
+        }
+
+        .features button:hover svg {
+            transform: rotate(360deg);
+        }
+
+        .response-box {
+            width: 100%;
+            min-height: 100px;
+            background: transparent;
+            border-radius: 20px;
+            padding: 25px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #e0e0e0;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(192, 192, 192, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .input-container textarea {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            resize: none;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 10px;
+            line-height: 1.5;
+        }
+
+        .input-container textarea::placeholder {
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        .input-container button {
+            background: linear-gradient(90deg, #FFD700, #C0C0C0);
+            border: none;
+            border-radius: 50%;
+            padding: 8px;
+            color: #1C2526;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .input-container button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+        }
+
+        .input-container button svg {
+            width: 20px;
+            height: 20px;
+            fill: #1C2526;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+            to { box-shadow: 0 0 25px rgba(192, 192, 192, 0.7); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <div class="logo">AI</div>
+            <div class="title">AI Assistant Pro</div>
+        </div>
+        <div class="welcome-message">
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 16H5V6h14v12zM8 8h8v2H8V8zm0 4h8v2H8v-2z"/>
+                </svg>
+            </div>
+            <h2>Welcome to Premium AI Chat</h2>
+            <p>I'm your advanced AI assistant, designed to provide exceptional help with any questions or tasks. Experience the next generation of AI conversation with enhanced capabilities and a beautiful interface.</p>
+        </div>
+        <div class="features">
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                </svg>
+                Smart Responses
+            </button>
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                </svg>
+                Real-time Chat
+            </button>
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                </svg>
+                Secure & Private
+            </button>
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                </svg>
+                Advanced AI
+            </button>
+        </div>
+        <div id="response" class="response-box">
+            <!-- Responses will appear here -->
+        </div>
+        <div class="input-container">
+            <textarea id="prompt" rows="1" placeholder="Type your message..."></textarea>
+            <button onclick="chat()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Chat functionality
+        async function chat() {
+            const prompt = document.getElementById("prompt").value;
+            const responseDiv = document.getElementById("response");
+
+            // Don't send empty messages
+            if (!prompt.trim()) {
+                responseDiv.innerHTML = "Please type something to chat! 😊";
+                return;
+            }
+
+            responseDiv.innerHTML = "Processing...";
+
+            try {
+                const response = await fetch("http://5.202.10.12:5001/api/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ prompt })
+                });
+                const data = await response.text();
+                responseDiv.innerHTML = data;
+            } catch (error) {
+                responseDiv.innerHTML = "Error connecting to the server. Please try again! 🛠️";
+            }
+
+            // Clear the textarea after sending
+            document.getElementById("prompt").value = "";
+        }
+
+        // Auto-resize textarea and handle Enter key
+        const textarea = document.getElementById("prompt");
+        textarea.addEventListener("input", function () {
+            this.style.height = "auto";
+            this.style.height = this.scrollHeight + "px";
+        });
+
+        // Handle Enter key to send message
+        textarea.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent new line
+                chat(); // Call the chat function to send the message
+            }
+        });
+    </script>
+</body>
+</html>
